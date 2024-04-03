@@ -1,3 +1,18 @@
+<?php
+session_start();
+
+if (isset($_POST['registered_user']) && isset($_POST['username']) && isset($_POST['email'])) {
+    $_SESSION['username'] = $_POST['username'];
+    $_SESSION['email'] = $_POST['email'];
+    $_SESSION['registered_user_discount'] = 20;
+}
+
+else {
+    unset($_SESSION['registered_user_discount']);
+}
+
+$registered_user_discount = isset($_SESSION['registered_user_discount']) ? $_SESSION['registered_user_discount'] : 0;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,13 +22,12 @@
     <title>My-AnimalShop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
-    crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
     <?php include "./Layout/navbar.php" ?>
+
     <div class="container">
 
         <div class="row">
@@ -40,7 +54,7 @@
                 echo '<img src="' . $product->getImage() . '" class="card-img-top" alt="' . $product->getName() . '">';
                 echo '<div class="card-body">';
                 echo '<h5 class="card-title">' . $product->getName() . '</h5>';
-                echo '<p class="card-text">Prezzo: $' . $product->getPrice() . '</p>';
+                echo '<p class="card-text">Prezzo: $' . $product->getPrice() * (1 - ($registered_user_discount / 100)) . '</p>';
                 echo '<p class="card-text">Categoria: ' . $product->getCategory()->getIcon() . ' ' . $product->getCategory()->getName() . '</p>';
                 echo '<p class="card-text">Tipo: ' . $product->getType() . '</p>';
                 echo '</div>';

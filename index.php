@@ -1,17 +1,22 @@
 <?php
 session_start();
 
+$cartTotal = isset($_SESSION['cart_total']) ? $_SESSION['cart_total'] : 0;
+
 if (isset($_POST['registered_user']) && isset($_POST['username']) && isset($_POST['email'])) {
+
     $_SESSION['username'] = $_POST['username'];
     $_SESSION['email'] = $_POST['email'];
     $_SESSION['registered_user_discount'] = 20;
-}
+} else {
 
-else {
     unset($_SESSION['registered_user_discount']);
 }
 
 $registered_user_discount = isset($_SESSION['registered_user_discount']) ? $_SESSION['registered_user_discount'] : 0;
+
+require('./Models/Payment.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +32,13 @@ $registered_user_discount = isset($_SESSION['registered_user_discount']) ? $_SES
 
 <body>
     <?php include "./Layout/navbar.php" ?>
-
+    <div id="cart">
+        <h3>Il Tuo Carrello<i class="fa-solid fa-cart-shopping"></i></h3>
+        <p>Totale nel carrello: $<span id="cart-total"><?php echo $cartTotal; ?></span></p>
+        <button class="btn btn-success" id="checkout-button" data-payment-approved="<?php echo $paymentApproved ? 'true' : 'false'; ?>">Effettua pagamento</button>
+    </div>
+    <div id="payment-status"></div>
+    </div>
     <div class="container">
 
         <div class="row">
@@ -54,9 +65,11 @@ $registered_user_discount = isset($_SESSION['registered_user_discount']) ? $_SES
                 echo '<img src="' . $product->getImage() . '" class="card-img-top" alt="' . $product->getName() . '">';
                 echo '<div class="card-body">';
                 echo '<h5 class="card-title">' . $product->getName() . '</h5>';
-                echo '<p class="card-text">Prezzo: $' . $product->getPrice() * (1 - ($registered_user_discount / 100)) . '</p>';
+                echo '<p class="card-text product-price">Prezzo: $' . $product->getPrice() * (1 - ($registered_user_discount / 100)) . '</p>';
                 echo '<p class="card-text">Categoria: ' . $product->getCategory()->getIcon() . ' ' . $product->getCategory()->getName() . '</p>';
                 echo '<p class="card-text">Tipo: ' . $product->getType() . '</p>';
+                echo '<button class="btn btn-primary add-to-basket" data-name="' . $product->getName() . '" data-price="' . $product->getPrice() . '">Aggiungi al carrello</button>';
+                echo '<button class="btn btn-danger remove-to-basket" data-name="' . $product->getName() . '">Rimuovi dal carrello</button>';
                 echo '</div>';
                 echo '</div>';
                 echo '</div>';
@@ -65,5 +78,82 @@ $registered_user_discount = isset($_SESSION['registered_user_discount']) ? $_SES
         </div>
     </div>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const addToBasket = document.querySelectorAll('.add-to-basket');
+        const removeToBasket = document.querySelectorAll('.remove-to-basket');
+        const total = document.getElementById('cart-total');
+
+
+        let cartTotal = <?php echo $cartTotal; ?>;
+
+        addToBasket.forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.card');
+                const priceText = card.querySelector('.card-body .product-price').innerText;
+                const index = priceText.indexOf('$');
+                if (index !== -1) {
+                    const priceString = priceText.slice(index + 1);
+                    const productPrice = parseFloat(priceString.replace(',', ''));
+                    if (!isNaN(productPrice)) {
+                        cartTotal += productPrice;
+                        updateTotal();
+                    } else {
+                        inner.text('Prezzo non valido:', priceText);
+                    }
+                } else {
+                    inner.text('Prezzo non valido:', priceText);
+                }
+            });
+        });
+
+        removeToBasket.forEach(button => {
+            button.addEventListener('click', function() {
+                if (cartTotal === 0) {
+                    return;
+                }
+
+                const card = this.closest('.card');
+                const priceText = card.querySelector('.card-body .product-price').innerText;
+                const index = priceText.indexOf('$');
+                if (index !== -1) {
+                    const priceString = priceText.slice(index + 1);
+                    const productPrice = parseFloat(priceString.replace(',', ''));
+                    if (!isNaN(productPrice)) {
+                        cartTotal -= productPrice;
+                        updateTotal();
+                    } else {
+                        inner.text('Prezzo non valido:', priceText);
+                    }
+                } else {
+                    inner.text('Prezzo non valido:', priceText);
+                }
+            });
+        });
+
+        function updateTotal() {
+            total.textContent = cartTotal.toFixed(2);
+        }
+
+        const checkoutButton = document.getElementById('checkout-button');
+
+        checkoutButton.addEventListener('click', function() {
+            const cartTotal = parseFloat(document.getElementById('cart-total').textContent);
+            const paymentStatus = document.getElementById('payment-status');
+
+            const currentDate = new Date();
+
+            const expiryDate = new Date("<?php echo $creditCardExpiry; ?>");
+
+            if (currentDate <= expiryDate) {
+                paymentStatus.textContent = 'Pagamento di €' + cartTotal.toFixed(2) + ' approvato.';
+                paymentStatus.style.color = 'green';
+            } else {
+                paymentStatus.innerHTML = 'Carta di credito scaduta!! <i class="fa-solid fa-triangle-exclamation"></i>';
+                paymentStatus.style.color = 'red';
+            }
+        });
+    });
+</script>
 
 </html>

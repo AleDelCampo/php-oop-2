@@ -66,8 +66,8 @@ require('./Models/Payment.php');
             $toy1 = new Toy('Pallina Futuristica', $cani, 4, 'https://www.eurocali.com/42988-large_default/intergross-doggies-ball-palla-sonora-per-cani.jpg', 'Plastica', '40g', 'Si');
             $toy2 = new Toy('Topo-Laser', $gatti, 12, 'https://alimentianimalionline.it/2699-large_default/gioco-puntatore-laser-per-gatto-camon.jpg', 'Plastica', '20g', 'No');
             $toy3 = new Toy('Mysterious Egg', $cani, 6, 'https://ae01.alicdn.com/kf/Sa850f84e6e204a9386900339de4b0366l.jpg_640x640Q90.jpg_.webp', 'Plastica', '80g', 'Si');
-            $catbed = new Bed('Cuccia Cane', $cani, 20, 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT9VcZ7C66TzBRbw8PEvFNTJrAOUsoj1EqvWHD6OC7ZD4UAvqWws2XH06q2ShB3iNwfqnzP4WHBTtaEZ9ofR3CtWjZc6UIwX6W3gV7iaX8h&usqp=CAc', 'Plastica', '10kg');
-            $dogbed = new Bed('Cuccia Gattino', $gatti, 24, 'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ3-mJ39mTuSPdzFRBnhJV8-FbVQyJ-MJYhrVsV6dGIF0o0Wc4u002pELIPXFNW4M2Kz76H2y_bvItMHhDGun6flQcTXIgi4wAt4M7V0KQ&usqp=CAc', 'Plastica', '10kg');
+            $catbed = new Bed('Cuccia Cane', $cani, 20, 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT9VcZ7C66TzBRbw8PEvFNTJrAOUsoj1EqvWHD6OC7ZD4UAvqWws2XH06q2ShB3iNwfqnzP4WHBTtaEZ9ofR3CtWjZc6UIwX6W3gV7iaX8h&usqp=CAc', 'Plastica', '1,6kg');
+            $dogbed = new Bed('Cuccia Gattino', $gatti, 24, 'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ3-mJ39mTuSPdzFRBnhJV8-FbVQyJ-MJYhrVsV6dGIF0o0Wc4u002pELIPXFNW4M2Kz76H2y_bvItMHhDGun6flQcTXIgi4wAt4M7V0KQ&usqp=CAc', 'Plastica', '2kg');
             $food1 = new Food('Croccantini', $cani, 6, 'https://www.ideashoppingcenter.it/files/archivio_Files/Foto/44645_2.JPG', 'Si');
             $food2 = new Food('Crocchette', $gatti, 6, 'https://www.cicalia.com/it/img/imgproducts/17563/l_17563.jpg', 'Si');
             $food3 = new Food('Scatolette', $cani, 8, 'https://i.ebayimg.com/thumbs/images/g/J04AAOSwksdjWkHL/s-l640.jpg', 'Si');
@@ -87,7 +87,6 @@ require('./Models/Payment.php');
                 if ($product instanceof Toy || $product instanceof Bed) {
                     echo '<p class="card-text">' . $product->getDetails() . '</p>';
                 }
-                echo '<p class="card-text">Tipo: ' . $product->getType() . '</p>';
                 if ($product instanceof Toy || $product instanceof Food) {
                     echo '<p class="card-text">' . $product->getEdibility() . '</p>';
                 }

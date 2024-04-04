@@ -35,7 +35,17 @@ require('./Models/Payment.php');
     <div id="cart">
         <h3>Il Tuo Carrello<i class="fa-solid fa-cart-shopping"></i></h3>
         <p>Totale nel carrello: $<span id="cart-total"><?php echo $cartTotal; ?></span></p>
-        <button class="btn btn-success" id="checkout-button" data-payment-approved="<?php echo $paymentApproved ? 'true' : 'false'; ?>">Effettua pagamento</button>
+        <button class="btn btn-success" id="checkout-button" data-payment-approved="<?php echo $paymentApproved ? 'true' : 'false'; ?>" disabled>Effettua pagamento</button>
+        <?php
+        if ($error) {
+        ?>
+            <div class="alert alert-danger" role="alert">
+                <?= $error ?>
+            </div>
+        <?php
+        }
+
+        ?>
     </div>
     <div id="payment-status"></div>
     </div>
@@ -43,22 +53,24 @@ require('./Models/Payment.php');
 
         <div class="row">
             <?php
+            require('./Traits/IsEdible.php');
             require('./Traits/Details.php');
             require('./Models/Category.php');
             require('./Models/Toy.php');
             require('./Models/Food.php');
             require('./Models/Bed.php');
 
-            $toy1 = new Toy('Pallina Futuristica', $cani, 4, 'https://www.eurocali.com/42988-large_default/intergross-doggies-ball-palla-sonora-per-cani.jpg', 'Plastica', '10kg');
-            $toy2 = new Toy('Topo-Laser', $gatti, 12, 'https://alimentianimalionline.it/2699-large_default/gioco-puntatore-laser-per-gatto-camon.jpg', 'Plastica', '10kg');
-            $catbed = new Bed('Cuccia', $cani, 20, 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT9VcZ7C66TzBRbw8PEvFNTJrAOUsoj1EqvWHD6OC7ZD4UAvqWws2XH06q2ShB3iNwfqnzP4WHBTtaEZ9ofR3CtWjZc6UIwX6W3gV7iaX8h&usqp=CAc', 'Plastica', '10kg');
-            $dogbed = new Bed('Cuccia', $gatti, 24, 'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ3-mJ39mTuSPdzFRBnhJV8-FbVQyJ-MJYhrVsV6dGIF0o0Wc4u002pELIPXFNW4M2Kz76H2y_bvItMHhDGun6flQcTXIgi4wAt4M7V0KQ&usqp=CAc', 'Plastica', '10kg');
-            $food1 = new Food('Croccantini', $cani, 6, 'https://www.ideashoppingcenter.it/files/archivio_Files/Foto/44645_2.JPG');
-            $food2 = new Food('Crocchette', $gatti, 6, 'https://www.cicalia.com/it/img/imgproducts/17563/l_17563.jpg');
-            $food3 = new Food('Scatolette', $cani, 8, 'https://i.ebayimg.com/thumbs/images/g/J04AAOSwksdjWkHL/s-l640.jpg');
-            $food4 = new Food('Scatolette', $gatti, 8, 'https://www.robinsonpetshop.it/26542-home_default/naturina-fresh-trancetti-di-tonno-in-salsa-per-gatti.jpg');
+            $toy1 = new Toy('Pallina Futuristica', $cani, 4, 'https://www.eurocali.com/42988-large_default/intergross-doggies-ball-palla-sonora-per-cani.jpg', 'Plastica', '40g', 'Si');
+            $toy2 = new Toy('Topo-Laser', $gatti, 12, 'https://alimentianimalionline.it/2699-large_default/gioco-puntatore-laser-per-gatto-camon.jpg', 'Plastica', '20g', 'No');
+            $toy3 = new Toy('Mysterious Egg', $cani, 6, 'https://ae01.alicdn.com/kf/Sa850f84e6e204a9386900339de4b0366l.jpg_640x640Q90.jpg_.webp', 'Plastica', '80g', 'Si');
+            $catbed = new Bed('Cuccia Cane', $cani, 20, 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT9VcZ7C66TzBRbw8PEvFNTJrAOUsoj1EqvWHD6OC7ZD4UAvqWws2XH06q2ShB3iNwfqnzP4WHBTtaEZ9ofR3CtWjZc6UIwX6W3gV7iaX8h&usqp=CAc', 'Plastica', '10kg');
+            $dogbed = new Bed('Cuccia Gattino', $gatti, 24, 'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ3-mJ39mTuSPdzFRBnhJV8-FbVQyJ-MJYhrVsV6dGIF0o0Wc4u002pELIPXFNW4M2Kz76H2y_bvItMHhDGun6flQcTXIgi4wAt4M7V0KQ&usqp=CAc', 'Plastica', '10kg');
+            $food1 = new Food('Croccantini', $cani, 6, 'https://www.ideashoppingcenter.it/files/archivio_Files/Foto/44645_2.JPG', 'Si');
+            $food2 = new Food('Crocchette', $gatti, 6, 'https://www.cicalia.com/it/img/imgproducts/17563/l_17563.jpg', 'Si');
+            $food3 = new Food('Scatolette', $cani, 8, 'https://i.ebayimg.com/thumbs/images/g/J04AAOSwksdjWkHL/s-l640.jpg', 'Si');
+            $food4 = new Food('Scatolette', $gatti, 8, 'https://www.robinsonpetshop.it/26542-home_default/naturina-fresh-trancetti-di-tonno-in-salsa-per-gatti.jpg', 'Si');
 
-            $products = array($toy1, $toy2, $catbed, $dogbed, $food1, $food2, $food3, $food4);
+            $products = array($toy1, $toy2, $toy3, $catbed, $dogbed, $food1, $food2, $food3, $food4);
 
             foreach ($products as $product) {
                 echo '<div class="col-md-4 mt-4">';
@@ -71,6 +83,10 @@ require('./Models/Payment.php');
                 echo '<p class="card-text">Tipo: ' . $product->getType() . '</p>';
                 if ($product instanceof Toy || $product instanceof Bed) {
                     echo '<p class="card-text">' . $product->getDetails() . '</p>';
+                }
+                echo '<p class="card-text">Tipo: ' . $product->getType() . '</p>';
+                if ($product instanceof Toy || $product instanceof Food) {
+                    echo '<p class="card-text">' . $product->getEdibility() . '</p>';
                 }
                 echo '<button class="btn btn-primary add-to-basket" data-name="' . $product->getName() . '" data-price="' . $product->getPrice() . '">Aggiungi al carrello</button>';
                 echo '<button class="btn btn-danger remove-to-basket" data-name="' . $product->getName() . '">Rimuovi dal carrello</button>';
@@ -87,7 +103,7 @@ require('./Models/Payment.php');
         const addToBasket = document.querySelectorAll('.add-to-basket');
         const removeToBasket = document.querySelectorAll('.remove-to-basket');
         const total = document.getElementById('cart-total');
-
+        const checkoutButton = document.getElementById('checkout-button');
 
         let cartTotal = <?php echo $cartTotal; ?>;
 
@@ -137,16 +153,18 @@ require('./Models/Payment.php');
 
         function updateTotal() {
             total.textContent = cartTotal.toFixed(2);
+            if (cartTotal > 0) {
+                checkoutButton.removeAttribute('disabled');
+            } else {
+                checkoutButton.setAttribute('disabled', 'disabled');
+            }
         }
-
-        const checkoutButton = document.getElementById('checkout-button');
 
         checkoutButton.addEventListener('click', function() {
             const cartTotal = parseFloat(document.getElementById('cart-total').textContent);
             const paymentStatus = document.getElementById('payment-status');
 
             const currentDate = new Date();
-
             const expiryDate = new Date("<?php echo $creditCardExpiry; ?>");
 
             if (currentDate <= expiryDate) {
@@ -159,5 +177,4 @@ require('./Models/Payment.php');
         });
     });
 </script>
-
-</html>Toy
+</html>

@@ -7,6 +7,18 @@ class Product
     public $image;
     public $type;
 
+
+    /**
+     * __construct
+     *
+     * @param  string $name
+     * @param  object $category
+     * @param  int $price
+     * @param  string $image
+     * @param  string $type
+     */
+
+
     public function __construct($name, $category, $price, $image, $type)
     {
         $this->name = $name;

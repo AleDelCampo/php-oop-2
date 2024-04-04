@@ -10,4 +10,5 @@ body {
 
 .card {
     cursor: pointer;
+    background-color: gainsboro;
 }

@@ -32,7 +32,7 @@ require('./Models/Payment.php');
 
 <body>
     <?php include "./Layout/navbar.php" ?>
-    <div id="cart" class="d-flex">
+    <div id="cart" class="p-2 d-flex">
         <div>
             <h3>Il Tuo Carrello<i class="fa-solid fa-cart-shopping"></i></h3>
             <p>Totale nel carrello: $<span id="cart-total"><?php echo $cartTotal; ?></span></p>
@@ -94,7 +94,7 @@ require('./Models/Payment.php');
                     }
                 }
                 echo '<button class="btn btn-primary add-to-basket" data-name="' . $product->getName() . '" data-price="' . $product->getPrice() . '">Aggiungi al carrello</button>';
-                echo '<button class="btn btn-danger remove-to-basket" data-name="' . $product->getName() . '">Rimuovi dal carrello</button>';
+                echo '<button class="mx-4 btn btn-danger remove-to-basket" data-name="' . $product->getName() . '">Rimuovi dal carrello</button>';
                 echo '</div>';
                 echo '</div>';
                 echo '</div>';

@@ -32,22 +32,25 @@ require('./Models/Payment.php');
 
 <body>
     <?php include "./Layout/navbar.php" ?>
-    <div id="cart">
-        <h3>Il Tuo Carrello<i class="fa-solid fa-cart-shopping"></i></h3>
-        <p>Totale nel carrello: $<span id="cart-total"><?php echo $cartTotal; ?></span></p>
-        <button class="btn btn-success" id="checkout-button" data-payment-approved="<?php echo $paymentApproved ? 'true' : 'false'; ?>" disabled>Effettua pagamento</button>
-        <?php
-        if ($error) {
-        ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $error ?>
-            </div>
-        <?php
-        }
-
-        ?>
+    <div id="cart" class="d-flex">
+        <div>
+            <h3>Il Tuo Carrello<i class="fa-solid fa-cart-shopping"></i></h3>
+            <p>Totale nel carrello: $<span id="cart-total"><?php echo $cartTotal; ?></span></p>
+        </div>
+        <div class="mx-4"><button class="btn btn-success" id="checkout-button" data-payment-approved="<?php echo $paymentApproved ? 'true' : 'false'; ?>" disabled>Effettua pagamento</button>
+            <?php
+            if ($error) {
+            ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $error ?>
+                </div>
+            <?php
+            }
+            ?>
+            <div id="payment-status"></div>
+        </div>
     </div>
-    <div id="payment-status"></div>
+    
     </div>
     <div class="container">
 
@@ -170,11 +173,16 @@ require('./Models/Payment.php');
             if (currentDate <= expiryDate) {
                 paymentStatus.textContent = 'Pagamento di €' + cartTotal.toFixed(2) + ' approvato.';
                 paymentStatus.style.color = 'green';
+                paymentStatus.style.backgroundColor = 'rgba(0, 128, 0, 0.2)';
+                paymentStatus.style.borderRadius = '6px';
             } else {
                 paymentStatus.innerHTML = 'Carta di credito scaduta!! <i class="fa-solid fa-triangle-exclamation"></i>';
                 paymentStatus.style.color = 'red';
+                paymentStatus.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
+                paymentStatus.style.borderRadius = '6px';
             }
         });
     });
 </script>
+
 </html>

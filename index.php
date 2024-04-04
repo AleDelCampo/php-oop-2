@@ -68,10 +68,10 @@ require('./Models/Payment.php');
             $toy3 = new Toy('Mysterious Egg', $cani, 6, 'https://ae01.alicdn.com/kf/Sa850f84e6e204a9386900339de4b0366l.jpg_640x640Q90.jpg_.webp', 'Plastica', '80g', 'Si');
             $catbed = new Bed('Cuccia Cane', $cani, 20, 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT9VcZ7C66TzBRbw8PEvFNTJrAOUsoj1EqvWHD6OC7ZD4UAvqWws2XH06q2ShB3iNwfqnzP4WHBTtaEZ9ofR3CtWjZc6UIwX6W3gV7iaX8h&usqp=CAc', 'Plastica', '1,6kg');
             $dogbed = new Bed('Cuccia Gattino', $gatti, 24, 'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ3-mJ39mTuSPdzFRBnhJV8-FbVQyJ-MJYhrVsV6dGIF0o0Wc4u002pELIPXFNW4M2Kz76H2y_bvItMHhDGun6flQcTXIgi4wAt4M7V0KQ&usqp=CAc', 'Plastica', '2kg');
-            $food1 = new Food('Croccantini', $cani, 6, 'https://www.ideashoppingcenter.it/files/archivio_Files/Foto/44645_2.JPG', 'Si');
-            $food2 = new Food('Crocchette', $gatti, 6, 'https://www.cicalia.com/it/img/imgproducts/17563/l_17563.jpg', 'Si');
-            $food3 = new Food('Scatolette', $cani, 8, 'https://i.ebayimg.com/thumbs/images/g/J04AAOSwksdjWkHL/s-l640.jpg', 'Si');
-            $food4 = new Food('Scatolette', $gatti, 8, 'https://www.robinsonpetshop.it/26542-home_default/naturina-fresh-trancetti-di-tonno-in-salsa-per-gatti.jpg', 'Si');
+            $food1 = new Food('Croccantini', $cani, 6, 'https://www.ideashoppingcenter.it/files/archivio_Files/Foto/44645_2.JPG', 'Si', 1200);
+            $food2 = new Food('Crocchette', $gatti, 6, 'https://www.cicalia.com/it/img/imgproducts/17563/l_17563.jpg', 'Si', 1000);
+            $food3 = new Food('Scatolette', $cani, 8, 'https://i.ebayimg.com/thumbs/images/g/J04AAOSwksdjWkHL/s-l640.jpg', 'Si', 860);
+            $food4 = new Food('Scatolette', $gatti, 8, 'https://www.robinsonpetshop.it/26542-home_default/naturina-fresh-trancetti-di-tonno-in-salsa-per-gatti.jpg', 'Si', 840);
 
             $products = array($toy1, $toy2, $toy3, $catbed, $dogbed, $food1, $food2, $food3, $food4);
 
@@ -89,6 +89,9 @@ require('./Models/Payment.php');
                 }
                 if ($product instanceof Toy || $product instanceof Food) {
                     echo '<p class="card-text">' . $product->getEdibility() . '</p>';
+                    if ($product instanceof Food) {
+                        echo '<p class="card-text">Calorie: ' . $product->getCalories() . ' Kcal</p>';
+                    }
                 }
                 echo '<button class="btn btn-primary add-to-basket" data-name="' . $product->getName() . '" data-price="' . $product->getPrice() . '">Aggiungi al carrello</button>';
                 echo '<button class="btn btn-danger remove-to-basket" data-name="' . $product->getName() . '">Rimuovi dal carrello</button>';
